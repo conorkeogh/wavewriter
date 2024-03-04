@@ -1,3 +1,6 @@
+Set up conversion from voltage -> value to send
+Set up checks on values
+
 Set up documentation
 Set up example waveforms
 
