@@ -4,6 +4,6 @@ project:
 website:
   title: "wavewriter"
   site-url: "https://conorkeogh.github.io/wavewriter"
-  description: "Device and drivers to generating arbitrary stimulation waveforms"
+  description: "Device and drivers for generating arbitrary waveforms for stimulation"
   repo-branch: main
   repo-url: "https://github.com/conorkeogh/wavewriter"

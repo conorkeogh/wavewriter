@@ -1,0 +1,10 @@
+website:
+  sidebar:
+    contents:
+      - index.ipynb
+      - 00_install.ipynb
+      - 01_setup.ipynb
+      - 02_initialisation.ipynb
+      - 03_triggering.ipynb
+      - 04_events.ipynb
+      - 05_contact.ipynb

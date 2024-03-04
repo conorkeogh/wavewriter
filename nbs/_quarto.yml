@@ -3,7 +3,9 @@ project:
 
 format:
   html:
-    theme: cosmo
+    theme: 
+        dark: [darkly, dark.scss]
+        light: [flatly, light.scss]
     css: styles.css
     toc: true
 
@@ -11,9 +13,11 @@ website:
   twitter-card: true
   open-graph: true
   repo-actions: [issue]
+  favicon: "oni_blue.png"
   navbar:
-    background: primary
+    background: dark
     search: true
+    logo: "oni.png"
   sidebar:
     style: floating
 
