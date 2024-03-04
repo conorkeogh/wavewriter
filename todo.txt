@@ -1,0 +1,11 @@
+Set up repo
+Set up nbdev
+
+Copy files over
+
+Set up init
+Set up sending data
+Set up start/stop
+
+Set up documentation
+Set up example waveforms
