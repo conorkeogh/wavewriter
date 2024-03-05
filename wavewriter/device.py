@@ -24,6 +24,7 @@ Sends messages to device to specify waveforms and start/stop stimulation
 import serial
 import serial.tools.list_ports
 import time
+import numpy as np
 
 class WaveWriter:
 
@@ -39,10 +40,10 @@ class WaveWriter:
         self.GREETING = b'Hello'
         self.RESPONSE = 'Hi there'
         
-        self.prep1_command = b'prep1'    # Prepare buffer 1 (V)
-        self.prep2_command = b'prep2'    # Prepare buffer 2 (t)
-        self.start_command = b'start'    # Start stimulation
-        self.stop_command = b'stop'      # Stop stimulation
+        self.prep1_command = 'prep1'    # Prepare buffer 1 (V)
+        self.prep2_command = 'prep2'    # Prepare buffer 2 (t)
+        self.start_command = 'start'    # Start stimulation
+        self.stop_command = 'stop'      # Stop stimulation
     
         # Define COM port settings
         self.BAUDRATE = 115200
