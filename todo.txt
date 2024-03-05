@@ -6,3 +6,8 @@ Set up example waveforms
 
 Set up requirements
 Set up pypi package
+
+---
+
+Set up experiment framework + GUI
+Set up experiment timeline + Gantt

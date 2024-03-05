@@ -67,7 +67,7 @@ class WaveWriter:
                     response = self.ser.readline()
 
                 # Check if response is appropriate
-                if response.decode().strip() == self.RESPONSE:
+                if response.decode().rstrip('\x00') == self.RESPONSE:
                     self.target_port = port.device
                     port_found = True
 
@@ -122,23 +122,40 @@ class WaveWriter:
         # If appropriate: save V and t to object
         self.v = v
         self.t = t
+        
+    def convert_buffer(self, x):
+        ''' Convert array to buffer to send '''
+        # Create emoty string
+        x_buffer = ''
+        
+        # Iterate through array
+        for value in x[:-1]:
+            x_buffer += str(value)    # Add to buffer
+            x_buffer += ','           # Add delimiter
+        x_buffer += str(x[-1])        # Add last value without delimiter
+        
+        return x_buffer
             
     def send_waveform(self, v, t):
         ''' Send waveform data to device '''
         # Check inputs are appropriate
         self.check_inputs(v, t)
         
+        # Convert to string buffers to send
+        v_buffer = self.convert_buffer(v)
+        t_buffer = self.convert_buffer(t)
+        
         # Prepare to send first buffer
         self.sendMessage(self.prep1_command)
         
         # Send V to buffer 1
-        self.sendMessage(v)
+        self.sendMessage(v_buffer)
         
         # Prepare to send second buffer
         self.sendMessage(self.prep2_command)
         
         # Send t to buffer 2
-        self.sendMessage(t)
+        self.sendMessage(t_buffer)
         
     def start(self):
         ''' Send start signal '''
