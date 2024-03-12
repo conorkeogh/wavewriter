@@ -2,6 +2,12 @@ Set up conversion from voltage -> value to send
 Set up checks on values
 
 Set up documentation
+
+Basic components
+- Generate square wave
+- Generate sinusoid
+- Add gaps
+- Combine + modulate
 Set up example waveforms
 - Tonic (40Hz)
 - Nevro high frequency - 10kHz
