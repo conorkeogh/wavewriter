@@ -3,6 +3,22 @@ Set up checks on values
 
 Set up documentation
 Set up example waveforms
+- Tonic (40Hz)
+- Nevro high frequency - 10kHz
+- Abbott burst (exponential charge balancing)
+- Boston burst (clustered tonic)
+- Sinusoid
+- Russian (square wave modulated sinusoid)
+- Sinusoid modulated sinusoid
+- Wavelet (Gaussian modulated sinusoid with gap)
+- Wavelet with low frequency modulation (-> asymmetric)
+
+Level shifter circuit design
+Order components
+Design board with uC + level shifter + output
+    Add LCD, rotary encoder, switch
+Order boards + more Oniduinos + STLinks + TFT screens
+Submit expenses
 
 Set up requirements
 Set up pypi package
@@ -10,4 +26,6 @@ Set up pypi package
 ---
 
 Set up experiment framework + GUI
-Set up experiment timeline + Gantt
+Set up installable package
+Set up documentation
+Generate initial results
