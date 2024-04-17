@@ -48,9 +48,13 @@ class WaveWriter:
         # Define COM port settings
         self.BAUDRATE = 115200
         
+        # Flag for whether device connected
+        self.connected = False
+        
         # Empty arrays for waveform
         self.v = np.array([])
         
+    def connect(self):
         # Get all serial ports
         ports = serial.tools.list_ports.comports()
 
@@ -81,7 +85,8 @@ class WaveWriter:
         # If port found: connect to port
         if port_found:
             self.ser = serial.Serial(self.target_port, self.BAUDRATE, timeout=5)
-
+            self.connected = True
+            
         # If port not found: raise error
         else:
             raise Exception("Device not found")
@@ -94,7 +99,12 @@ class WaveWriter:
         Send message over serial port
         Takes message to send
         '''
-        self.ser.write(message.encode())
+        if self.connected == True:
+            self.ser.write(message.encode())
+            
+        # If not connected: raise error
+        else:
+            raise Exception("Device not connected - use WaveWriter.connect()")
         
     # Check inputs are appropriate
     def check_inputs(self, v):
@@ -134,7 +144,7 @@ class WaveWriter:
         
         # Prepare to send first buffer
         self.sendMessage(self.prep1_command)
-        time.sleep(1)
+        #time.sleep(1)
         
         # Send V to buffer 1
         self.sendMessage(v_buffer)
@@ -158,3 +168,4 @@ class WaveWriter:
         Closes device connection
         '''
         self.ser.close()
+        self.connected = False
