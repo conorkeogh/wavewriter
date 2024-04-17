@@ -41,7 +41,7 @@ class WaveWriter:
         self.RESPONSE = 'Hi there'
         
         self.prep1_command = 'prep1'    # Prepare buffer 1 (V)
-        self.prep2_command = 'prep2'    # Prepare buffer 2 (t)
+        self.done1_command = 'done1'    # Stop buffer 1
         self.start_command = 'start'    # Start stimulation
         self.stop_command = 'stop'      # Stop stimulation
     
@@ -152,11 +152,14 @@ class WaveWriter:
         # Send V to buffer 1
         self.sendMessage(v_buffer)
         
+        # End buffer
+        self.sendMessage(self.done1_command)
+        
         # Prepare to send second buffer
-        self.sendMessage(self.prep2_command)
+        #self.sendMessage(self.prep2_command)
         
         # Send t to buffer 2
-        self.sendMessage(t_buffer)
+        #self.sendMessage(t_buffer)
         
     def start(self):
         ''' Send start signal '''
