@@ -50,7 +50,6 @@ class WaveWriter:
         
         # Empty arrays for waveform
         self.v = np.array([])
-        self.t = np.array([])
         
         # Get all serial ports
         ports = serial.tools.list_ports.comports()
@@ -98,31 +97,19 @@ class WaveWriter:
         self.ser.write(message.encode())
         
     # Check inputs are appropriate
-    def check_inputs(self, v, t):
+    def check_inputs(self, v):
         # Check types
         if type(v) is not np.ndarray:
             raise Exception("V is not an array")
             
-        if type(t) is not np.ndarray:
-            raise Exception("t is not an array")
-            
         # Check dimensions
         v = np.squeeze(v)
-        t = np.squeeze(t)
         
         if v.ndim > 1:
             raise Exception("V is not one-dimensional")
             
-        if t.ndim > 1:
-            raise Exception("t is not one dimensional")
-            
-        # Check lengths are equal
-        if v.size != t.size:
-            raise Exception("V and t are not of equal lengths")
-            
-        # If appropriate: save V and t to object
+        # If appropriate: save V to object
         self.v = v
-        self.t = t
         
     def convert_buffer(self, x):
         ''' Convert array to buffer to send '''
@@ -137,29 +124,25 @@ class WaveWriter:
         
         return x_buffer
             
-    def send_waveform(self, v, t):
+    def send_waveform(self, v):
         ''' Send waveform data to device '''
         # Check inputs are appropriate
-        self.check_inputs(v, t)
+        self.check_inputs(v)
         
         # Convert to string buffers to send
         v_buffer = self.convert_buffer(v)
-        t_buffer = self.convert_buffer(t)
         
         # Prepare to send first buffer
         self.sendMessage(self.prep1_command)
+        time.sleep(1)
         
         # Send V to buffer 1
         self.sendMessage(v_buffer)
+        time.sleep(1)
         
         # End buffer
         self.sendMessage(self.done1_command)
-        
-        # Prepare to send second buffer
-        #self.sendMessage(self.prep2_command)
-        
-        # Send t to buffer 2
-        #self.sendMessage(t_buffer)
+        time.sleep(1)
         
     def start(self):
         ''' Send start signal '''
