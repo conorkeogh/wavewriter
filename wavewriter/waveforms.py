@@ -217,7 +217,7 @@ def generate_burst_abbott(
     v = np.concatenate((v, np.ones(int(pulsewidth/timestep), dtype=int)*amplitude))
     
     # Add recovery phase
-    t_ = np.linspace(0, 5000, num=int(5000/timestep))
+    t_ = np.linspace(0, interval_inter, num=int(interval_inter/timestep))
     
     # Get value to recover
     target = np.abs(np.sum(v))
@@ -226,20 +226,20 @@ def generate_burst_abbott(
     x0 = 0.001
     res = minimize(objective, x0,
                   method='nelder-mead',
-                  args=(t_, -amplitude*0.25, target)
+                  args=(t_, -amplitude*0.75, target)
                   )
     
     # Get optimal value
     k = res.x
     
     # Get exponential recovery
-    v_recovery = exponential_decay(t_, -amplitude*0.25, -res.x)
+    v_recovery = exponential_decay(t_, -amplitude*0.75, res.x)
     
     # Add to values
     v = np.concatenate((v, v_recovery))
         
     # Add interval before next burst
-    v = np.concatenate((v, np.zeros(int(interval_inter/10), dtype=int)))
+    #v = np.concatenate((v, np.zeros(int(interval_inter/5), dtype=int)))
     
     # Get time
     t = np.linspace(0, len(v)*timestep, num=len(v))
@@ -350,19 +350,23 @@ def generate_wavelet(
     timestep = 5 # us
     
     # Get total length
-    period_wavelet = 1000000 / frequency_wavelet
-    num_samples = period_wavelet / timestep # 5us per sample
+    period_wavelet = 1 / frequency_wavelet
+    num_samples = int((1000000 / frequency_wavelet) / timestep) # 5us per sample
     t = np.linspace(0, period_wavelet, num=int(num_samples))
     
     # Get sinusoid over total duration
     v = np.sin(2 * np.pi * frequency_sine * t) * amplitude
     
     # Get Gaussian over total duration
-    midpoint = int(period_wavelet/2)
+    midpoint = period_wavelet/2
+    wavelet_sigma = wavelet_sigma / 1000000 # Convert to us
     wavelet = np.exp(-((t - midpoint)**2) / (2 * (wavelet_sigma**2)))
     
     # Modulate sinusoid with Gaussian
-    v = v #* wavelet
+    v = v * wavelet
+    
+    # Convert time to microseconds
+    t = t * 1000000
     
     return v, t
 
@@ -390,24 +394,28 @@ def generate_wavelet_modulated(
     timestep = 5 # us
     
     # Get total length
-    period_wavelet = 1000000 / frequency_wavelet
-    num_samples = period_wavelet / timestep # 5us per sample
+    period_wavelet = 1 / frequency_wavelet
+    num_samples = int((1000000 / frequency_wavelet) / timestep) # 5us per sample
     t = np.linspace(0, period_wavelet, num=int(num_samples))
     
     # Get sinusoid over total duration
     v = np.sin(2 * np.pi * frequency_sine * t) * amplitude
     
     # Get Gaussian over total duration
-    midpoint = int(period_wavelet/2)
+    midpoint = period_wavelet/2
+    wavelet_sigma = wavelet_sigma / 1000000 # Convert to us
     wavelet = np.exp(-((t - midpoint)**2) / (2 * (wavelet_sigma**2)))
     
     # Get modulating sinusoid
-    modulating_sine = np.sin(2 * np.pi * frequency_wavelet * t/1000000)*amplitude/3
+    modulating_sine = np.sin(2 * np.pi * frequency_wavelet * t)*(amplitude/2)
+    
+    # Modulate with sinusoid
+    v = v + modulating_sine
     
     # Modulate sinusoid with Gaussian
     v = v * wavelet
     
-    # Modulate with sinusoid
-    v = v + modulating_sine
+    # Convert time to microseconds
+    t = t * 1000000
     
     return v, t
