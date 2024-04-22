@@ -144,15 +144,15 @@ class WaveWriter:
         
         # Prepare to send first buffer
         self.sendMessage(self.prep1_command)
-        #time.sleep(1)
+        time.sleep(5)
         
         # Send V to buffer 1
         self.sendMessage(v_buffer)
-        time.sleep(1)
+        time.sleep(5)
         
         # End buffer
         self.sendMessage(self.done1_command)
-        time.sleep(1)
+        time.sleep(5)
         
     def start(self):
         ''' Send start signal '''
