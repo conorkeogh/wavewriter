@@ -61,6 +61,7 @@ class WaveWriter:
         # For each port: try accessing and checking for acknowledge message
         port_found = False
         for port in ports:
+            print(port)
             try:
                 # Connect to serial port
                 self.ser = serial.Serial(port.device, self.BAUDRATE, timeout=1, write_timeout=1)
@@ -69,6 +70,7 @@ class WaveWriter:
                 for _ in range(3):
                     self.ser.write(self.GREETING)
                     response = self.ser.readline()
+                    print(response)
 
                 # Check if response is appropriate
                 if response.decode().rstrip('\x00') == self.RESPONSE:
@@ -79,7 +81,8 @@ class WaveWriter:
                 self.ser.close()
 
             except Exception as e:
-                # Do nothing - just ignore failed ports
+                # Do nothing - just ignore failed portsA
+                print(e)
                 pass
 
         # If port found: connect to port
@@ -144,15 +147,15 @@ class WaveWriter:
         
         # Prepare to send first buffer
         self.sendMessage(self.prep1_command)
-        time.sleep(5)
+        time.sleep(1)
         
         # Send V to buffer 1
         self.sendMessage(v_buffer)
-        time.sleep(5)
+        time.sleep(1)
         
         # End buffer
         self.sendMessage(self.done1_command)
-        time.sleep(5)
+        time.sleep(1)
         
     def start(self):
         ''' Send start signal '''
